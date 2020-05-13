@@ -1,6 +1,6 @@
 var board = [];
 var currentLevel = 0;
-var tiles = {"blank": null, "edge": null, "hard_ice": null, "ice": null, "movable_ice": null, "soft_ice": null, "water": null, "goal": null, "coin_bag": null, "lock": null, "key": null, "teleporter": null, "teleporter_used": null};
+var tiles = {"puffle": null, "blank": null, "edge": null, "hard_ice": null, "ice": null, "movable_ice": null, "soft_ice": null, "water": null, "goal": null, "coin_bag": null, "lock": null, "key": null, "teleporter": null, "teleporter_used": null};
 
 const SQSIZE = 25;
 const BOARDWIDTH = 19;
@@ -34,5 +34,17 @@ function draw() {
 }
 
 function reset() {
-
+    board = levels[currentLevel].board;
 }
+
+const levels = [
+    {
+        board: [
+            [], [], [], [], [], [], [], [], [],
+            [null, "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", null, null, null],
+            [null, "edge", "goal", "ice", "ice", "ice", "ice", "ice", "ice", "ice", "ice", "ice", "ice", "ice", "puffle", "edge", null, null, null],
+            [null, "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", null, null, null],
+            [], [], []
+        ]
+    }
+]
