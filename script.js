@@ -1,5 +1,5 @@
 var board = [];
-var currentLevel = 13;
+var currentLevel = 0;
 var hasKey = false;
 var tiles = {"puffle": null, "blank": null, "edge": null, "hard_ice": null, "ice": null, "movable_ice": null, "soft_ice": null, "water": null, "goal": null, "coin_bag": null, "lock": null, "key": null, "teleporter": null, "teleporter_used": null};
 var pufflePosition = {};
@@ -36,7 +36,8 @@ function draw() {
 }
 
 function reset() {
-    board = levels[currentLevel].board;
+    console.log("Resetting");
+    board = JSON.parse(JSON.stringify(levels[currentLevel].board));
     hasKey = false;
     // Calculate puffle's starting position based on the level. Eventually, this can be stored in the level's property.
     for(var row = 0; row < BOARDHEIGHT; row++) {
@@ -59,12 +60,8 @@ function keyPressed() {
     if(xMovement == 0 && yMovement == 0) return;
 
     // check if movement is valid
-    if(board[pufflePosition.y + yMovement] == null) return;
-    if(board[pufflePosition.y + yMovement][pufflePosition.x + xMovement] == null) return;
+    if(validateMove(xMovement, yMovement) != true) return;
     var newTileType = board[pufflePosition.y + yMovement][pufflePosition.x + xMovement];
-    if(newTileType == "edge" || newTileType == "water") return;
-
-    if(newTileType == "lock" && hasKey == false) return;
     if(newTileType == "key") hasKey = true;
 
     if(newTileType == "movable_ice") {
@@ -84,7 +81,7 @@ function keyPressed() {
             board[startY][startX] = "ice";
             board[newY+1][startX] = "movable_ice";
         }
-        if(keyCode == DOWN_ARROW) {
+        else if(keyCode == DOWN_ARROW) {
             // Iterate downwards, look for spot where it can move to
             for(var newY = startY; newY > 0 && newY < BOARDHEIGHT; newY++) {
                 console.log("FIND: " + newY + " (" + board[newY][startX] + ")");
@@ -98,7 +95,7 @@ function keyPressed() {
             board[startY][startX] = "ice";
             board[newY-1][startX] = "movable_ice";
         }
-        if(keyCode == LEFT_ARROW) {
+        else if(keyCode == LEFT_ARROW) {
             // Iterate leftwards, look for spot where it can move to
             for(var newX = startX; newX > 0 && newX < BOARDWIDTH; newX--) {
                 console.log("FIND: " + newX + " (" + board[startY][newX] + ")");
@@ -112,7 +109,7 @@ function keyPressed() {
             board[startY][startX] = "ice";
             board[startY][newX+1] = "movable_ice";
         }
-        if(keyCode == RIGHT_ARROW) {
+        else if(keyCode == RIGHT_ARROW) {
             // Iterate leftwards, look for spot where it can move to
             for(var newX = startX; newX > 0 && newX < BOARDWIDTH; newX++) {
                 console.log("FIND: " + newX + " (" + board[startY][newX] + ")");
@@ -126,6 +123,8 @@ function keyPressed() {
             board[startY][startX] = "ice";
             board[startY][newX-1] = "movable_ice";
         }
+        
+
     }
 
     // ok make movement
@@ -139,8 +138,21 @@ function keyPressed() {
 
     if(newTileType == "goal") {
         currentLevel++;
-        reset();
+        return reset();
     }
+
+    setTimeout(() => {
+        if(validateMove(1, 0) != true && validateMove(-1, 0) != true && validateMove(0, 1) != true && validateMove(0, -1) != true) return reset();
+    }, 250);
+}
+
+function validateMove(xMovement, yMovement) {
+    if(board[pufflePosition.y + yMovement] == null) return false;
+    if(board[pufflePosition.y + yMovement][pufflePosition.x + xMovement] == null) return false;
+    var newTileType = board[pufflePosition.y + yMovement][pufflePosition.x + xMovement];
+    if(newTileType == "edge" || newTileType == "water") return false;
+    if(newTileType == "lock" && hasKey == false) return false;
+    return true;
 }
 
 const levels = [
@@ -168,5 +180,5 @@ const levels = [
     {"board":[["edge","edge","edge","edge","edge","edge",null,null,null,"edge","edge","edge","edge",null,null,null,null,null,null],["edge","ice","ice","ice","ice","edge",null,null,null,"edge","ice","ice","edge","edge","edge",null,null,null,null],["edge","ice","ice","ice","ice","edge","edge","edge",null,"edge","ice","ice","ice","ice","edge",null,null,null,null],["edge","edge","ice","ice","ice","ice","coin_bag","edge","edge","edge","ice","ice","ice","ice","edge","edge",null,null,null],[null,"edge","ice","ice","ice","ice","hard_ice","ice","ice","edge","ice","ice","ice","hard_ice","ice","edge","edge",null,null],[null,"edge","ice","edge","edge","ice","ice","edge","ice","edge","edge","ice","ice","ice","hard_ice","ice","edge",null,null],["edge","edge","ice","ice","edge","ice","ice","ice","hard_ice","ice","ice","ice","ice","ice","ice","edge","edge","edge",null],["edge","ice","ice","ice","edge","ice","ice","hard_ice","ice","ice","ice","ice","ice","ice","ice","ice","key","edge",null],["edge","ice","ice","ice","edge","ice","edge","movable_ice","edge","edge","edge","ice","edge","ice","ice","ice","ice","edge",null],["edge","ice","ice","edge","edge","ice","ice","ice","ice","ice","edge","hard_ice","ice","ice","ice","edge","edge","edge",null],["edge","edge","ice","edge","edge","edge","edge","edge","edge","ice","edge","ice","ice","ice","hard_ice","ice","edge",null,null],[null,"edge","ice","edge","edge","edge","edge","puffle","ice","ice","edge","ice","ice","hard_ice","ice","edge","edge",null,null],[null,"edge","ice","lock","ice","goal","edge","ice","ice","ice","edge","ice","ice","ice","edge","edge",null,null,null],[null,"edge","soft_ice","edge","edge","edge","edge","ice","ice","ice","edge","edge","ice","ice","edge",null,null,null,null],[null,"edge","edge","edge",null,null,"edge","edge","edge","edge","edge","edge","edge","edge","edge",null,null,null,null]]},
     {"board":[["edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge"],["edge",null,null,null,null,null,null,null,null,"edge","hard_ice","hard_ice","edge","hard_ice","hard_ice",null,null,null,"edge"],["edge",null,"edge",null,null,null,null,null,null,null,"hard_ice","hard_ice","hard_ice","hard_ice",null,"edge",null,null,"edge"],["edge",null,null,null,null,null,null,null,null,null,"hard_ice","hard_ice","hard_ice","hard_ice",null,"edge","lock","edge","edge"],["edge",null,null,null,"edge",null,null,null,null,null,"hard_ice","hard_ice","hard_ice","hard_ice",null,"edge",null,"puffle","edge"],["edge",null,null,null,null,null,"hard_ice","hard_ice","hard_ice","coin_bag","hard_ice",null,null,null,null,"edge","edge","edge","edge"],["edge",null,null,null,null,null,"hard_ice",null,"hard_ice","hard_ice","hard_ice",null,null,null,null,null,null,null,"edge"],["edge",null,null,null,null,null,"hard_ice",null,null,null,null,null,null,null,null,null,null,null,"edge"],["edge","edge","hard_ice","hard_ice","hard_ice","movable_ice",null,null,null,null,null,null,"hard_ice",null,null,null,null,null,"edge"],["edge","key","hard_ice","hard_ice","hard_ice","hard_ice",null,null,null,null,null,null,null,null,null,null,null,null,"edge"],["edge",null,null,"edge",null,null,null,null,null,null,null,null,null,null,"edge","edge",null,null,"edge"],["edge",null,null,null,null,null,null,null,null,null,null,null,null,null,"edge","edge","edge","edge","edge"],["edge",null,"edge",null,"edge","puffle","edge",null,"edge",null,null,null,null,null,null,null,null,null,"edge"],["edge",null,null,null,"edge","edge","edge",null,null,null,null,null,null,null,null,null,null,null,"edge"],["edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge"]]},
     {"board":[["edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge"],["edge","ice","ice","hard_ice","ice","ice","ice","edge","edge","ice","ice","ice","ice","edge","ice","ice","ice","ice","edge"],["edge","ice","edge","ice","ice","ice","ice","ice","ice","ice","ice","ice","ice","ice","hard_ice","ice","ice","ice","edge"],["edge","ice","ice","ice","edge","edge","ice","ice","ice","ice","edge","edge","edge","ice","ice","edge","edge","edge","edge"],["edge","edge","edge","ice","edge","edge","edge","ice","ice","ice","edge","edge","edge","ice","ice","ice","ice","puffle","edge"],["edge","edge","ice","ice","edge","edge","edge","ice","edge","ice","edge","edge","ice","ice","movable_ice","ice","ice","edge","edge"],["edge","edge","ice","ice","ice","ice","ice","hard_ice","ice","hard_ice","ice","ice","ice","ice","ice","ice","ice","edge","edge"],["edge","edge","edge","ice","ice","ice","edge","ice","edge","ice","edge","ice","ice","ice","ice","ice","ice","ice","edge"],["edge","edge","edge","ice","ice","hard_ice","ice","hard_ice","ice","hard_ice","ice","ice","ice","ice","ice","ice","ice","ice","edge"],["edge","ice","ice","ice","ice","coin_bag","edge","ice","edge","ice","edge","edge","edge","edge","edge","edge","edge","edge","edge"],["edge","ice","ice","hard_ice","ice","ice","ice","hard_ice","ice","hard_ice","ice","ice","edge","ice","ice","ice","ice","hard_ice","edge"],["edge","ice","ice","ice","edge","ice","ice","hard_ice","ice","hard_ice","ice","ice","edge","lock","edge","goal","edge","hard_ice","edge"],["edge","ice","ice","ice","ice","ice","ice","ice","edge","ice","ice","ice","ice","hard_ice","edge","edge","edge","hard_ice","edge"],["edge","ice","ice","edge","ice","ice","ice","ice","edge","ice","edge","ice","ice","hard_ice","hard_ice","hard_ice","hard_ice","key","edge"],["edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge","edge"]]},
-    
+
 ]
