@@ -21,7 +21,9 @@ PNG.decode("level.png", function(pixelsRaw) {
             else if(pixel.r == 0 && pixel.g == 148 && pixel.b == 255) board[row][col] = "hard_ice"; // slightly darker aqua
             else if(pixel.r == 255 && pixel.g == 106 && pixel.b == 0) board[row][col] = "coin_bag"; // orange
             else if(pixel.r == 76 && pixel.g == 255 && pixel.b == 0) board[row][col] = "goal"; // the green that's next to yellow
-            else if(pixel.r == 0 && pixel.g == 0 && pixel.b == 0) board[row][col] = "edge";
+            else if(pixel.r == 0 && pixel.g == 0 && pixel.b == 0) board[row][col] = "edge"; // black
+            else if(pixel.r == 255 && pixel.g == 0 && pixel.b == 220) board[row][col] = "lock"; // pink but not quite red
+            else if(pixel.r == 255 && pixel.g == 0 && pixel.b == 110) board[row][col] = "key"; // pink but basically red
             else board[row][col] = null;
             cumulative++;
         }
