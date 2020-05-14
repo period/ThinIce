@@ -46,6 +46,8 @@ function reset() {
     }
 }
 
+var lastTile = null;
+
 function keyPressed() {
     var xMovement = 0;
     var yMovement = 0;
@@ -66,11 +68,13 @@ function keyPressed() {
     if(newTileType == "key") hasKey = true;
 
     // ok make movement
-    if(board[pufflePosition.y][pufflePosition.x] == "hard_ice") board[pufflePosition.y][pufflePosition.x] = "ice";
+    if(lastTile == "hard_ice") board[pufflePosition.y][pufflePosition.x] = "ice";
     else board[pufflePosition.y][pufflePosition.x] = "water";
     pufflePosition.y += yMovement;
     pufflePosition.x += xMovement;
     board[pufflePosition.y][pufflePosition.x] = "puffle";
+
+    lastTile = newTileType;
 
     if(newTileType == "goal") {
         currentLevel++;
