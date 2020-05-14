@@ -67,6 +67,67 @@ function keyPressed() {
     if(newTileType == "lock" && hasKey == false) return;
     if(newTileType == "key") hasKey = true;
 
+    if(newTileType == "movable_ice") {
+        let startY = pufflePosition.y + yMovement;
+        let startX = pufflePosition.x + xMovement;
+        if(keyCode == UP_ARROW) {
+            // Iterate upwards, look for spot where it can move to
+            for(var newY = startY; newY > 0 && newY < BOARDHEIGHT; newY--) {
+                console.log("FIND: " + newY + " (" + board[newY][startX] + ")");
+                if(board[newY][startX].includes("ice") == false && newY == startY) return; // can't move the ice at all... reject movement.
+                if(board[newY][startX].includes("ice") == false) {
+                    console.log("Stopping iteration at " + newY);
+                    break; // previous iteration had the final one
+                }
+            }
+            if(startY - newY == 1) return;
+            board[startY][startX] = "ice";
+            board[newY+1][startX] = "movable_ice";
+        }
+        if(keyCode == DOWN_ARROW) {
+            // Iterate downwards, look for spot where it can move to
+            for(var newY = startY; newY > 0 && newY < BOARDHEIGHT; newY++) {
+                console.log("FIND: " + newY + " (" + board[newY][startX] + ")");
+                if(board[newY][startX].includes("ice") == false && newY == startY) return; // can't move the ice at all... reject movement.
+                if(board[newY][startX].includes("ice") == false) {
+                    console.log("Stopping iteration at " + newY);
+                    break; // previous iteration had the final one
+                }
+            }
+            if(newY - startY == 1) return;
+            board[startY][startX] = "ice";
+            board[newY-1][startX] = "movable_ice";
+        }
+        if(keyCode == LEFT_ARROW) {
+            // Iterate leftwards, look for spot where it can move to
+            for(var newX = startX; newX > 0 && newX < BOARDWIDTH; newX--) {
+                console.log("FIND: " + newX + " (" + board[startY][newX] + ")");
+                if(board[startY][newX].includes("ice") == false && newX == startX) return; // can't move the ice at all... reject movement.
+                if(board[startY][newX].includes("ice") == false) {
+                    console.log("Stopping iteration at " + newX);
+                    break; // previous iteration had the final one
+                }
+            }
+            if(startX - newX == 1) return;
+            board[startY][startX] = "ice";
+            board[startY][newX+1] = "movable_ice";
+        }
+        if(keyCode == RIGHT_ARROW) {
+            // Iterate leftwards, look for spot where it can move to
+            for(var newX = startX; newX > 0 && newX < BOARDWIDTH; newX++) {
+                console.log("FIND: " + newX + " (" + board[startY][newX] + ")");
+                if(board[startY][newX].includes("ice") == false && newX == startX) return; // can't move the ice at all... reject movement.
+                if(board[startY][newX].includes("ice") == false) {
+                    console.log("Stopping iteration at " + newX);
+                    break; // previous iteration had the final one
+                }
+            }
+            if(newX - startX == 1) return;
+            board[startY][startX] = "ice";
+            board[startY][newX-1] = "movable_ice";
+        }
+    }
+
     // ok make movement
     if(lastTile == "hard_ice") board[pufflePosition.y][pufflePosition.x] = "ice";
     else board[pufflePosition.y][pufflePosition.x] = "water";
