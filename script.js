@@ -146,6 +146,8 @@ function keyPressed() {
 
     }
 
+    if(newTileType == "coin_bag") roundScore += 50;
+
     // ok make movement
     if(lastTile == "hard_ice") board[pufflePosition.y][pufflePosition.x] = "ice";
     else board[pufflePosition.y][pufflePosition.x] = "water";
