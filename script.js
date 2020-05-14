@@ -87,5 +87,18 @@ const levels = [
             [null, "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", "edge", null, null, null],
             [], [], []
         ]
+    },
+    {
+        board: [
+            [], [], [], [], [], [],
+            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "edge", "edge", null, null, null],
+            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "goal", "edge", null, null, null],
+            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "ice", "edge", null, null, null],
+            [null,"edge","edge", "edge", "edge", "edge", "edge", "edge", null, "edge", "edge", "edge", "edge", "edge", "ice", "edge", null, null, null],
+            [null,"edge","puffle", "ice", "ice", "ice", "ice", "edge", null, "edge", "ice", "ice", "ice", "ice", "ice", "edge", null, null, null],
+            [null,"edge","edge", "edge", "edge", "edge", "ice", "edge", "edge", "edge", "ice", "edge", "edge", "edge", "edge", "edge", null, null, null],
+            [null, null, null, null, null, "edge", "ice", "ice", "ice", "ice", "ice", "edge"],
+            [null, null, null, null, null, "edge", "edge", "edge", "edge", "edge", "edge", "edge"]
+        ]
     }
 ]
