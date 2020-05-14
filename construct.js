@@ -24,6 +24,8 @@ PNG.decode("level.png", function(pixelsRaw) {
             else if(pixel.r == 0 && pixel.g == 0 && pixel.b == 0) board[row][col] = "edge"; // black
             else if(pixel.r == 255 && pixel.g == 0 && pixel.b == 220) board[row][col] = "lock"; // pink but not quite red
             else if(pixel.r == 255 && pixel.g == 0 && pixel.b == 110) board[row][col] = "key"; // pink but basically red
+            else if(pixel.r == 0 && pixel.g == 74 && pixel.b == 127) board[row][col] = "movable_ice"; // murky version of slightly darker aqua
+            else if(pixel.r == 0 && pixel.g == 127 && pixel.b == 127) board[row][col] = "soft_ice"; // murky version of aqua
             else board[row][col] = null;
             cumulative++;
         }
