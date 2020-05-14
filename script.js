@@ -6,15 +6,21 @@ var pufflePosition = {};
 const SQSIZE = 25;
 const BOARDWIDTH = 19;
 const BOARDHEIGHT = 15;
-const XOFFSET = 40;
-const YOFFSET = 40;
+const XOFFSET = 100;
+const YOFFSET = 100;
+
+var score = 0;
+var solved = 0;
+var roundScore = 0;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     rectMode(CENTER)
     imageMode(CENTER)
     reset();
-
+    let n = createButton("Reset")
+    n.position(XOFFSET + ((BOARDWIDTH / 2) * SQSIZE), YOFFSET + (BOARDHEIGHT * SQSIZE) + 150)
+    n.mousePressed(reset)
 }
 
 function preload() {
@@ -24,19 +30,32 @@ function preload() {
     }
 }
 
+var water = 0;
+var ice = 0;
+
 function draw() {
+    background("white");
+    water = 0;
+    ice = 0;
     for(var row = 0; row < BOARDHEIGHT; row++) {
         for(var col = 0; col < BOARDWIDTH; col++) {
             let tile;
             if(board[row] == null || board[row][col] == null) tile = "blank";
             else tile = board[row][col];
+            if(tile == "water") water++;
+            if(tile.includes("ice")) ice++;
             image(tiles[tile], col * SQSIZE + XOFFSET, row * SQSIZE + YOFFSET, SQSIZE, SQSIZE)
         }
     }
+
+    textSize(45);
+    text("LEVEL " + (currentLevel + 1) + " | " + water + " / " + (ice + water) + " | SOLVED " + solved, 25, 50);
+    text("POINTS " + (score + roundScore), 250, 550);
 }
 
 function reset() {
     console.log("Resetting");
+    roundScore = 0;
     board = JSON.parse(JSON.stringify(levels[currentLevel].board));
     hasKey = false;
     // Calculate puffle's starting position based on the level. Eventually, this can be stored in the level's property.
@@ -134,10 +153,14 @@ function keyPressed() {
     pufflePosition.x += xMovement;
     board[pufflePosition.y][pufflePosition.x] = "puffle";
 
+    roundScore++;
+
     lastTile = newTileType;
 
     if(newTileType == "goal") {
         currentLevel++;
+        score += roundScore;
+        if(water == (ice + water)) solved++;
         return reset();
     }
 
