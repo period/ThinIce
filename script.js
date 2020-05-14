@@ -5,7 +5,7 @@ var tiles = {"puffle": null, "blank": null, "edge": null, "hard_ice": null, "ice
 var pufflePosition = {};
 const SQSIZE = 25;
 const BOARDWIDTH = 19;
-const BOARDHEIGHT = 19;
+const BOARDHEIGHT = 15;
 const XOFFSET = 40;
 const YOFFSET = 40;
 
@@ -88,17 +88,6 @@ const levels = [
             [], [], []
         ]
     },
-    {
-        board: [
-            [], [], [], [], [], [],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "edge", "edge", null, null, null],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "goal", "edge", null, null, null],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, "edge", "ice", "edge", null, null, null],
-            [null,"edge","edge", "edge", "edge", "edge", "edge", "edge", null, "edge", "edge", "edge", "edge", "edge", "ice", "edge", null, null, null],
-            [null,"edge","puffle", "ice", "ice", "ice", "ice", "edge", null, "edge", "ice", "ice", "ice", "ice", "ice", "edge", null, null, null],
-            [null,"edge","edge", "edge", "edge", "edge", "ice", "edge", "edge", "edge", "ice", "edge", "edge", "edge", "edge", "edge", null, null, null],
-            [null, null, null, null, null, "edge", "ice", "ice", "ice", "ice", "ice", "edge"],
-            [null, null, null, null, null, "edge", "edge", "edge", "edge", "edge", "edge", "edge"]
-        ]
-    }
+    {"board":[[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"edge","edge","edge",null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"edge","goal","edge",null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"edge","ice","edge",null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"edge","ice","edge",null,null,null],[null,"edge","edge","edge","edge","edge","edge","edge",null,"edge","edge","edge","edge","edge","ice","edge",null,null,null],[null,"edge","puffle","ice","ice","ice","ice","edge",null,"edge","ice","ice","ice","ice","ice","edge",null,null,null],[null,"edge","edge","edge","edge","edge","ice","edge","edge","edge","ice","edge","edge","edge","edge","edge",null,null,null],[null,null,null,null,null,"edge","ice","ice","ice","ice","ice","edge",null,null,null,null,null,null,null],[null,null,null,null,null,"edge","edge","edge","edge","edge","edge","edge",null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]]},
+    
 ]
