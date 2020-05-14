@@ -1,5 +1,6 @@
 var board = [];
 var currentLevel = 0;
+var hasKey = false;
 var tiles = {"puffle": null, "blank": null, "edge": null, "hard_ice": null, "ice": null, "movable_ice": null, "soft_ice": null, "water": null, "goal": null, "coin_bag": null, "lock": null, "key": null, "teleporter": null, "teleporter_used": null};
 var pufflePosition = {};
 const SQSIZE = 25;
@@ -36,6 +37,7 @@ function draw() {
 
 function reset() {
     board = levels[currentLevel].board;
+    hasKey = false;
     // Calculate puffle's starting position based on the level. Eventually, this can be stored in the level's property.
     for(var row = 0; row < BOARDHEIGHT; row++) {
         for(var col = 0; col < BOARDWIDTH; col++) {
@@ -60,11 +62,20 @@ function keyPressed() {
     var newTileType = board[pufflePosition.y + yMovement][pufflePosition.x + xMovement];
     if(newTileType == "edge" || newTileType == "water") return;
 
+    if(newTileType == "lock" && hasKey == false) return;
+    if(newTileType == "key") hasKey = true;
+
     // ok make movement
-    board[pufflePosition.y][pufflePosition.x] = "water";
+    if(board[pufflePosition.y][pufflePosition.x] == "hard_ice") board[pufflePosition.y][pufflePosition.x] = "ice";
+    else board[pufflePosition.y][pufflePosition.x] = "water";
     pufflePosition.y += yMovement;
     pufflePosition.x += xMovement;
     board[pufflePosition.y][pufflePosition.x] = "puffle";
+
+    if(newTileType == "goal") {
+        currentLevel++;
+        reset();
+    }
 }
 
 const levels = [
